@@ -1,0 +1,24 @@
+:root {
+  // 浅色主题
+  --bg-color: #ffffff;
+  --text-color: #1f2937;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --link-color: #3b82f6;
+  --link-hover-color: #2563eb;
+  --card-bg: #ffffff;
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.dark {
+  // 深色主题
+  --bg-color: #111827;
+  --text-color: #f9fafb;
+  --text-secondary: #9ca3af;
+  --border-color: #374151;
+  --link-color: #60a5fa;
+  --link-hover-color: #3b82f6;
+  --card-bg: #1f2937;
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
