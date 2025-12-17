@@ -3,7 +3,7 @@
     <div class="container">
       <div class="footer-content">
         <p class="copyright">
-          © {{ currentYear }} ZaoSpace. All rights reserved.
+          {{ $t('footer.copyright', { year: currentYear }) }}
         </p>
         <div class="social-links">
           <a

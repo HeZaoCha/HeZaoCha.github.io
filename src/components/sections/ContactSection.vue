@@ -3,7 +3,9 @@
     <div class="container">
       <div class="contact-content">
         <div class="contact-info">
-          <h2 class="contact-title">联系方式</h2>
+          <h2 class="contact-title">
+            {{ $t('contact.title') }}
+          </h2>
           <div class="contact-items">
             <div class="contact-item">
               <i class="i-mdi-email text-2xl" />
@@ -14,7 +16,10 @@
                 </a>
               </div>
             </div>
-            <div v-if="resumeData.personalInfo.github" class="contact-item">
+            <div
+              v-if="resumeData.personalInfo.github"
+              class="contact-item"
+            >
               <i class="i-mdi-github text-2xl" />
               <div>
                 <h3>GitHub</h3>
@@ -27,7 +32,10 @@
                 </a>
               </div>
             </div>
-            <div v-if="resumeData.personalInfo.linkedin" class="contact-item">
+            <div
+              v-if="resumeData.personalInfo.linkedin"
+              class="contact-item"
+            >
               <i class="i-mdi-linkedin text-2xl" />
               <div>
                 <h3>LinkedIn</h3>
@@ -43,50 +51,97 @@
           </div>
         </div>
         <div class="contact-form">
-          <h2 class="contact-title">发送消息</h2>
-          <form @submit.prevent="handleSubmit" class="form">
+          <h2 class="contact-title">
+            {{ $t('contact.sendMessage') }}
+          </h2>
+          <div
+            v-if="showSuccess"
+            class="alert alert-success"
+          >
+            <i class="i-mdi-check-circle" />
+            <span>{{ $t('contact.successMessage') }}</span>
+          </div>
+          <div
+            v-if="showError"
+            class="alert alert-error"
+          >
+            <i class="i-mdi-alert-circle" />
+            <span>{{ errorMessage || $t('contact.errorMessage') }}</span>
+          </div>
+          <form
+            class="form"
+            @submit.prevent="handleSubmit"
+          >
             <div class="form-group">
-              <label for="name">姓名</label>
+              <label for="name">{{ $t('contact.name') }} <span class="required">*</span></label>
               <input
                 id="name"
                 v-model="form.name"
                 type="text"
-                required
-                placeholder="请输入您的姓名"
-              />
+                :class="{ error: errors.name }"
+                :placeholder="$t('contact.namePlaceholder')"
+                @blur="validateForm"
+              >
+              <span
+                v-if="errors.name"
+                class="error-message"
+              >{{ errors.name }}</span>
             </div>
             <div class="form-group">
-              <label for="email">邮箱</label>
+              <label for="email">{{ $t('contact.email') }} <span class="required">*</span></label>
               <input
                 id="email"
                 v-model="form.email"
                 type="email"
-                required
-                placeholder="请输入您的邮箱"
-              />
+                :class="{ error: errors.email }"
+                :placeholder="$t('contact.emailPlaceholder')"
+                @blur="validateForm"
+              >
+              <span
+                v-if="errors.email"
+                class="error-message"
+              >{{ errors.email }}</span>
             </div>
             <div class="form-group">
-              <label for="subject">主题</label>
+              <label for="subject">{{ $t('contact.subject') }} <span class="required">*</span></label>
               <input
                 id="subject"
                 v-model="form.subject"
                 type="text"
-                required
-                placeholder="请输入主题"
-              />
+                :class="{ error: errors.subject }"
+                :placeholder="$t('contact.subjectPlaceholder')"
+                @blur="validateForm"
+              >
+              <span
+                v-if="errors.subject"
+                class="error-message"
+              >{{ errors.subject }}</span>
             </div>
             <div class="form-group">
-              <label for="message">消息</label>
+              <label for="message">{{ $t('contact.message') }} <span class="required">*</span></label>
               <textarea
                 id="message"
                 v-model="form.message"
-                required
+                :class="{ error: errors.message }"
                 rows="5"
-                placeholder="请输入您的消息"
+                :placeholder="$t('contact.messagePlaceholder')"
+                @blur="validateForm"
               />
+              <span
+                v-if="errors.message"
+                class="error-message"
+              >{{ errors.message }}</span>
             </div>
-            <button type="submit" class="btn-primary" :disabled="loading">
-              {{ loading ? '发送中...' : '发送消息' }}
+            <button
+              type="submit"
+              class="btn-primary"
+              :disabled="loading"
+            >
+              <i
+                v-if="loading"
+                class="i-mdi-loading animate-spin"
+              />
+              <span>{{ loading ? $t('contact.sending') : $t('contact.sendMessage') }}</span>
             </button>
           </form>
         </div>
@@ -96,47 +151,130 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { resumeData } from '@/constants/resume-data';
-import { useAppStore } from '@/store/modules/app';
 
-const appStore = useAppStore();
+const { t } = useI18n();
+
 const loading = ref(false);
+const showSuccess = ref(false);
+const showError = ref(false);
+const errorMessage = ref('');
+const submitCount = ref(0);
+const lastSubmitTime = ref(0);
 
-const form = ref({
+const form = reactive({
   name: '',
   email: '',
   subject: '',
   message: '',
 });
 
+const errors = reactive({
+  name: '',
+  email: '',
+  subject: '',
+  message: '',
+});
+
+const validateForm = (): boolean => {
+  let isValid = true;
+  errors.name = '';
+  errors.email = '';
+  errors.subject = '';
+  errors.message = '';
+
+  // 验证姓名
+  if (!form.name.trim()) {
+    errors.name = t('contact.namePlaceholder');
+    isValid = false;
+  } else if (form.name.trim().length < 2) {
+    errors.name = t('contact.name') + '至少需要2个字符';
+    isValid = false;
+  }
+
+  // 验证邮箱
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!form.email.trim()) {
+    errors.email = t('contact.emailPlaceholder');
+    isValid = false;
+  } else if (!emailRegex.test(form.email)) {
+    errors.email = '请输入有效的邮箱地址';
+    isValid = false;
+  }
+
+  // 验证主题
+  if (!form.subject.trim()) {
+    errors.subject = t('contact.subjectPlaceholder');
+    isValid = false;
+  } else if (form.subject.trim().length < 3) {
+    errors.subject = t('contact.subject') + '至少需要3个字符';
+    isValid = false;
+  }
+
+  // 验证消息
+  if (!form.message.trim()) {
+    errors.message = t('contact.messagePlaceholder');
+    isValid = false;
+  } else if (form.message.trim().length < 10) {
+    errors.message = t('contact.message') + '至少需要10个字符';
+    isValid = false;
+  }
+
+  return isValid;
+};
+
 const handleSubmit = async () => {
+  if (!validateForm()) {
+    return;
+  }
+
+  // 防垃圾邮件机制：限制提交频率（1分钟内最多3次）
+  const now = Date.now();
+  if (now - lastSubmitTime.value < 60000) {
+    submitCount.value++;
+    if (submitCount.value > 3) {
+      showError.value = true;
+      errorMessage.value = '提交过于频繁，请稍后再试';
+      return;
+    }
+  } else {
+    submitCount.value = 1;
+  }
+  lastSubmitTime.value = now;
+
   loading.value = true;
+  showError.value = false;
+  showSuccess.value = false;
+
   try {
-    const response = await fetch('http://localhost:3001/api/contact', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(form.value),
+    const { post } = await import('@/utils/api');
+    const data = await post('/contact', {
+      name: form.name.trim(),
+      email: form.email.trim(),
+      subject: form.subject.trim(),
+      message: form.message.trim(),
     });
 
-    const data = await response.json();
-
     if (data.success) {
-      alert('消息发送成功！我会尽快回复您。');
-      form.value = {
-        name: '',
-        email: '',
-        subject: '',
-        message: '',
-      };
+      showSuccess.value = true;
+      form.name = '';
+      form.email = '';
+      form.subject = '';
+      form.message = '';
+      // 3秒后隐藏成功提示
+      setTimeout(() => {
+        showSuccess.value = false;
+      }, 3000);
     } else {
-      alert(data.message || '消息发送失败，请稍后重试。');
+      showError.value = true;
+      errorMessage.value = data.message || t('contact.errorMessage');
     }
   } catch (error) {
     console.error('Failed to send message:', error);
-    alert('消息发送失败，请检查网络连接或稍后重试。');
+    showError.value = true;
+    errorMessage.value = t('contact.errorMessage');
   } finally {
     loading.value = false;
   }
@@ -217,6 +355,10 @@ const handleSubmit = async () => {
   label {
     font-weight: 500;
     color: var(--text-color);
+
+    .required {
+      color: var(--error-color);
+    }
   }
 
   input,
@@ -234,14 +376,54 @@ const handleSubmit = async () => {
       outline: none;
       border-color: var(--link-color);
     }
+
+    &.error {
+      border-color: var(--error-color);
+    }
   }
 
   textarea {
     resize: vertical;
   }
+
+  .error-message {
+    color: var(--error-color);
+    font-size: 0.875rem;
+    margin-top: -0.25rem;
+  }
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+
+  i {
+    font-size: 1.25rem;
+  }
+
+  &.alert-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+
+  &.alert-error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
 }
 
 .btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   padding: 0.75rem 2rem;
   background-color: var(--link-color);
   color: white;
@@ -259,12 +441,68 @@ const handleSubmit = async () => {
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 768px) {
+  .contact-section {
+    padding: 2rem 0;
+  }
+
   .contact-content {
     grid-template-columns: 1fr;
     gap: 3rem;
+  }
+
+  .contact-title {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-title {
+    font-size: 1.5rem;
+  }
+
+  .contact-item {
+    flex-direction: column;
+    gap: 0.5rem;
+
+    i {
+      margin-top: 0;
+    }
+  }
+
+  .form-group {
+    gap: 0.375rem;
+
+    label {
+      font-size: 0.875rem;
+    }
+
+    input,
+    textarea {
+      padding: 0.625rem;
+      font-size: 0.875rem;
+    }
+  }
+
+  .btn-primary {
+    padding: 0.625rem 1.5rem;
+    font-size: 0.875rem;
   }
 }
 </style>

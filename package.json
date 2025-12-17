@@ -1,42 +1,46 @@
 {
   "name": "zaospace",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "description": "ZaoSpace 个人简历网站",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "lint": "eslint . --fix",
     "format": "prettier --write src/**/*.{js,ts,vue,scss,css,json}",
     "type-check": "vue-tsc --noEmit",
     "test": "vitest",
     "test:coverage": "vitest --coverage"
   },
   "dependencies": {
-    "axios": "^1.6.8",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.19",
     "html2pdf.js": "^0.10.3",
-    "pinia": "^2.1.7",
-    "vue": "^3.4.21",
-    "vue-router": "^4.2.5"
+    "pinia": "^3.0.4",
+    "vue": "^3.5.25",
+    "vue-i18n": "^11.2.2",
+    "vue-router": "^4.6.4"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
     "@iconify-json/fa": "^1.1.0",
     "@iconify-json/mdi": "^1.1.0",
     "@types/node": "^20.11.24",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
-    "@vitejs/plugin-vue": "^5.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.49.0",
+    "@typescript-eslint/parser": "^8.49.0",
+    "@vitejs/plugin-vue": "^6.0.3",
     "@vue/test-utils": "^2.4.5",
     "@vue/tsconfig": "^0.5.1",
-    "eslint": "^8.56.0",
-    "eslint-plugin-vue": "^9.20.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-vue": "^10.6.2",
     "prettier": "^3.2.5",
-    "typescript": "^5.3.3",
-    "unocss": "^0.58.6",
-    "vite": "^5.1.0",
+    "sass-embedded": "^1.96.0",
+    "terser": "^5.44.1",
+    "typescript": "^5.9.3",
+    "unocss": "^66.5.10",
+    "vite": "^7.2.7",
     "vitest": "^1.2.2",
-    "vue-tsc": "^1.8.27"
+    "vue-eslint-parser": "^10.2.0",
+    "vue-tsc": "^3.1.8"
   }
 }

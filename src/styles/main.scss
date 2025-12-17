@@ -1,5 +1,5 @@
-@import './variables.scss';
-@import './themes.scss';
+@use './variables.scss' as *;
+@use './themes.scss' as *;
 
 * {
   margin: 0;
@@ -7,11 +7,12 @@
   box-sizing: border-box;
 }
 
-// 滚动动画
+// 滚动动画 - 增强版
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-on-scroll.animate-in {
@@ -19,9 +20,153 @@
   transform: translateY(0);
 }
 
+// 淡入动画变体
+.animate-on-scroll.fade-in {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.animate-on-scroll.fade-in.animate-in {
+  opacity: 1;
+}
+
+// 缩放动画
+.animate-on-scroll.scale-in {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.animate-on-scroll.scale-in.animate-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
+// 页面加载动画
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 按钮悬停动画 - 增强版
+.btn-primary,
+.btn-secondary {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+                height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+.btn-primary {
+  &:hover {
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  }
+}
+
+// 卡片悬停动画 - 增强版
+.project-card,
+.experience-item,
+.education-item,
+.skill-category {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  &:hover::before {
+    left: 100%;
+  }
+}
+
+// 卡片进入动画
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 html {
   font-size: 16px;
   scroll-behavior: smooth;
+}
+
+// 平滑滚动增强
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  * {
+    scroll-margin-top: 80px; // 为固定头部留出空间
+  }
 }
 
 body {
@@ -33,6 +178,27 @@ body {
   color: var(--text-color);
   background-color: var(--bg-color);
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden; // 防止水平滚动
+}
+
+// 添加页面背景渐变效果
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.dark body::before {
+  opacity: 0.5;
 }
 
 #app {

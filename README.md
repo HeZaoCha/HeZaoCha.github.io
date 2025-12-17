@@ -16,13 +16,15 @@
 
 ## 技术栈
 
-- **前端框架**: Vue 3
-- **开发语言**: TypeScript
-- **构建工具**: Vite
-- **样式方案**: UnoCSS + SCSS
-- **状态管理**: Pinia
-- **路由**: Vue Router 4
+- **前端框架**: Vue 3.5.25
+- **开发语言**: TypeScript 5.9.3
+- **构建工具**: Vite 7.2.7
+- **样式方案**: UnoCSS 66.5.10 + SCSS
+- **状态管理**: Pinia 3.0.4
+- **路由**: Vue Router 4.6.4
+- **国际化**: Vue I18n 11.2.2
 - **图标**: Iconify
+- **代码检查**: ESLint 9.39.1
 - **后端**: Node.js + Express + Nodemailer
 
 ## 快速开始
@@ -187,6 +189,22 @@ pnpm format
 # 运行测试
 pnpm test
 ```
+
+## 文档
+
+项目相关文档位于 `doc/` 目录：
+
+- 📖 [**项目详细说明文档**](./doc/PROJECT_DOCUMENTATION.md) - **推荐阅读**：包含所有模块的详细介绍
+- [项目结构说明](./doc/PROJECT_STRUCTURE.md)
+- [安装指南](./doc/README-INSTALL.md)
+- [需求文档](./doc/REQUIREMENT.md)
+- [TODO 列表](./doc/TODO_LIST.md)
+- [更新日志](./doc/CHANGELOG.md)
+- [升级总结](./doc/UPGRADE_SUMMARY.md)
+- [修复总结](./doc/FIX_SUMMARY.md)
+- [ESLint 升级指南](./doc/eslint/ESLINT_UPGRADE_GUIDE.md)
+- [ESLint 升级分析](./doc/eslint/ESLINT_UPGRADE_ANALYSIS.md)
+- [ESLint 警告总结](./doc/eslint/ESLINT_WARNING_SUMMARY.md)
 
 ## 许可证
 

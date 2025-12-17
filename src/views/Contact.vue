@@ -1,16 +1,15 @@
 <template>
-  <DefaultLayout>
-    <div class="contact-page">
-      <div class="container">
-        <h1 class="page-title">联系我</h1>
-        <ContactSection />
-      </div>
+  <main class="contact-page">
+    <div class="container">
+      <h1 class="page-title">
+        {{ $t('contact.title') }}
+      </h1>
+      <ContactSection />
     </div>
-  </DefaultLayout>
+  </main>
 </template>
 
 <script setup lang="ts">
-import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import ContactSection from '@/components/sections/ContactSection.vue';
 </script>
 
@@ -32,6 +31,23 @@ import ContactSection from '@/components/sections/ContactSection.vue';
   margin-bottom: 3rem;
   text-align: center;
   color: var(--text-color);
+}
+
+@media (max-width: 768px) {
+  .contact-page {
+    padding: 2rem 0;
+  }
+
+  .page-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.75rem;
+  }
 }
 </style>
 

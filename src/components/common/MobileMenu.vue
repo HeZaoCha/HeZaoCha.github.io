@@ -1,11 +1,24 @@
 <template>
   <div class="mobile-menu">
-    <button class="menu-toggle" @click="toggleMenu" :aria-label="isOpen ? '关闭菜单' : '打开菜单'">
-      <i v-if="!isOpen" class="i-mdi-menu text-2xl" />
-      <i v-else class="i-mdi-close text-2xl" />
+    <button
+      class="menu-toggle"
+      :aria-label="isOpen ? '关闭菜单' : '打开菜单'"
+      @click="toggleMenu"
+    >
+      <i
+        v-if="!isOpen"
+        class="i-mdi-menu text-2xl"
+      />
+      <i
+        v-else
+        class="i-mdi-close text-2xl"
+      />
     </button>
     <transition name="slide">
-      <nav v-if="isOpen" class="mobile-nav">
+      <nav
+        v-if="isOpen"
+        class="mobile-nav"
+      >
         <router-link
           v-for="item in navItems"
           :key="item.path"
@@ -21,14 +34,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-const navItems = [
-  { name: '首页', path: '/' },
-  { name: '关于', path: '/about' },
-  { name: '项目', path: '/projects' },
-  { name: '联系', path: '/contact' },
-];
+const { t } = useI18n();
+
+const navItems = computed(() => [
+  { name: t('common.home'), path: '/' },
+  { name: t('common.about'), path: '/about' },
+  { name: t('common.projects'), path: '/projects' },
+  { name: t('common.contact'), path: '/contact' },
+]);
 
 const isOpen = ref(false);
 

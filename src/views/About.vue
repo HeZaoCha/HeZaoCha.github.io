@@ -1,14 +1,11 @@
 <template>
-  <DefaultLayout>
-    <div class="about resume-content">
-      <AboutSection />
-      <ExperienceSection />
-    </div>
-  </DefaultLayout>
+  <main class="about resume-content">
+    <AboutSection />
+    <ExperienceSection />
+  </main>
 </template>
 
 <script setup lang="ts">
-import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import AboutSection from '@/components/sections/AboutSection.vue';
 import ExperienceSection from '@/components/sections/ExperienceSection.vue';
 </script>
@@ -16,5 +13,11 @@ import ExperienceSection from '@/components/sections/ExperienceSection.vue';
 <style scoped>
 .about {
   min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .about {
+    padding: 0;
+  }
 }
 </style>

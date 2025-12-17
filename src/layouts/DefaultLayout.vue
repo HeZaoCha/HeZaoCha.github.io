@@ -2,11 +2,7 @@
   <div class="default-layout">
     <Header />
     <main class="main-content">
-      <router-view v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
-          <component :is="Component" />
-        </transition>
-      </router-view>
+      <slot />
     </main>
     <Footer />
   </div>
@@ -26,16 +22,7 @@ import Footer from '@/components/common/Footer.vue';
 
 .main-content {
   flex: 1;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+  width: 100%;
 }
 </style>
 

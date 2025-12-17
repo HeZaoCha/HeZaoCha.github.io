@@ -1,7 +1,9 @@
 <template>
   <section class="about-section">
     <div class="container">
-      <h2 class="section-title">关于我</h2>
+      <h2 class="section-title">
+        {{ $t('about.title') }}
+      </h2>
       <div class="about-content">
         <div class="about-text">
           <p>{{ resumeData.personalInfo.bio }}</p>
@@ -85,8 +87,31 @@ import { resumeData } from '@/constants/resume-data';
 }
 
 @media (max-width: 768px) {
+  .about-section {
+    padding: 2rem 0;
+  }
+
   .section-title {
     font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .about-text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .about-text {
+    font-size: 0.875rem;
+  }
+
+  .info-item {
+    font-size: 0.875rem;
   }
 }
 </style>

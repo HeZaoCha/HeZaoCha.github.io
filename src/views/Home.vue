@@ -1,15 +1,12 @@
 <template>
-  <DefaultLayout>
-    <div class="home">
-      <HeroSection />
-      <SkillsSection />
-      <ProjectsSection />
-    </div>
-  </DefaultLayout>
+  <main class="home">
+    <HeroSection />
+    <SkillsSection />
+    <ProjectsSection />
+  </main>
 </template>
 
 <script setup lang="ts">
-import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import HeroSection from '@/components/sections/HeroSection.vue';
 import SkillsSection from '@/components/sections/SkillsSection.vue';
 import ProjectsSection from '@/components/sections/ProjectsSection.vue';
@@ -18,6 +15,12 @@ import ProjectsSection from '@/components/sections/ProjectsSection.vue';
 <style scoped>
 .home {
   min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .home {
+    padding: 0;
+  }
 }
 </style>
 

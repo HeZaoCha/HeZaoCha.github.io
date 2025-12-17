@@ -1,14 +1,18 @@
 <template>
   <section class="skills-section">
     <div class="container">
-      <h2 class="section-title">技能</h2>
+      <h2 class="section-title">
+        {{ $t('skills.title') }}
+      </h2>
       <div class="skills-grid">
         <div
           v-for="category in resumeData.skills"
           :key="category.category"
           class="skill-category animate-on-scroll"
         >
-          <h3 class="category-title">{{ category.category }}</h3>
+          <h3 class="category-title">
+            {{ category.category }}
+          </h3>
           <div class="skills-list">
             <div
               v-for="skill in category.items"
@@ -16,11 +20,14 @@
               class="skill-item"
             >
               <div class="skill-header">
-                <span v-if="skill.icon" class="skill-icon">
+                <span
+                  v-if="skill.icon"
+                  class="skill-icon"
+                >
                   <i :class="`i-${skill.icon} text-xl`" />
                 </span>
                 <span class="skill-name">{{ skill.name }}</span>
-                <span class="skill-level">{{ skill.level }}/5</span>
+                <span class="skill-level">{{ skill.level }}/5 {{ $t('skills.level') }}</span>
               </div>
               <div class="skill-bar">
                 <div
@@ -128,12 +135,50 @@ import { resumeData } from '@/constants/resume-data';
 }
 
 @media (max-width: 768px) {
+  .skills-section {
+    padding: 2rem 0;
+  }
+
   .section-title {
     font-size: 2rem;
+    margin-bottom: 2rem;
   }
 
   .skills-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .skill-category {
+    padding: 1.5rem;
+  }
+
+  .category-title {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.75rem;
+  }
+
+  .skill-category {
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+  }
+
+  .category-title {
+    font-size: 1.125rem;
+  }
+
+  .skill-name {
+    font-size: 0.875rem;
+  }
+
+  .skill-level {
+    font-size: 0.75rem;
   }
 }
 </style>

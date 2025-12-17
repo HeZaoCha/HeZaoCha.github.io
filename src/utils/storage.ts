@@ -33,3 +33,12 @@ export const storage = {
   },
 };
 
+// 导出便捷函数以保持向后兼容
+export const getStorage = <T>(key: string, defaultValue?: T): T | null => {
+  return storage.get<T>(key, defaultValue);
+};
+
+export const setStorage = <T>(key: string, value: T): void => {
+  storage.set<T>(key, value);
+};
+

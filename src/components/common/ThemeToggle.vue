@@ -1,7 +1,17 @@
 <template>
-  <button class="theme-toggle" @click="toggleTheme" :aria-label="`切换到${isDark ? '浅色' : '深色'}模式`">
-    <i v-if="isDark" class="i-mdi-weather-sunny text-xl" />
-    <i v-else class="i-mdi-weather-night text-xl" />
+  <button
+    class="theme-toggle"
+    :aria-label="`切换到${isDark ? '浅色' : '深色'}模式`"
+    @click="toggleTheme"
+  >
+    <i
+      v-if="isDark"
+      class="i-mdi-weather-sunny text-xl"
+    />
+    <i
+      v-else
+      class="i-mdi-weather-night text-xl"
+    />
   </button>
 </template>
 
